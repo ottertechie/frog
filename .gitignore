@@ -1,0 +1,29 @@
+# Node dependencies
+node_modules/
+app/**/node_modules/
+
+# Build outputs
+dist/
+build/
+app/frontend/dist/
+app/backend/dist/
+src-tauri/target/
+
+# Local runtime data
+data/frog.db
+data/logs/*.log
+data/cache/*
+!.gitkeep
+
+# Env files
+.env
+.env.local
+
+# Editor and OS
+.DS_Store
+*.swp
+.vscode/
+.idea/
+
+# Tauri
+src-tauri/gen/

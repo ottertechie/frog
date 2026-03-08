@@ -1,0 +1,7 @@
+{
+  "appName": "Frog",
+  "userName": "PJ",
+  "frontendPort": 4142,
+  "backendPort": 4141,
+  "ollamaBaseUrl": "http://127.0.0.1:11434"
+}

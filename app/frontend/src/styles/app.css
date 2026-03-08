@@ -1,0 +1,27 @@
+:root {
+  color-scheme: dark;
+  font-family: Inter, system-ui, sans-serif;
+}
+body {
+  margin: 0;
+  background: #050505;
+  color: #f4f4f4;
+}
+.layout { padding: 16px; }
+header { display: flex; flex-direction: column; gap: 8px; }
+.controls { display: flex; gap: 8px; }
+select, button, textarea {
+  background: #111;
+  color: #f4f4f4;
+  border: 1px solid #333;
+  border-radius: 8px;
+  padding: 8px;
+}
+.status { color: #98fb98; }
+.face { font-size: 32px; margin: 12px 0; }
+.main-content { display: grid; grid-template-columns: 2fr 1fr; gap: 12px; }
+.chat-window { min-height: 340px; background: #0d0d0d; border: 1px solid #232323; padding: 12px; overflow-y: auto; }
+.msg { margin-bottom: 10px; }
+.file-panel { background: #0d0d0d; border: 1px solid #232323; padding: 12px; }
+.composer { margin-top: 12px; display: flex; gap: 8px; }
+textarea { flex: 1; min-height: 72px; }
