@@ -1,0 +1,21 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "Frog",
+  "version": "0.1.0",
+  "identifier": "com.frog.app",
+  "build": {
+    "beforeDevCommand": "npm run dev",
+    "beforeBuildCommand": "npm run build",
+    "devUrl": "http://localhost:4142",
+    "frontendDist": "../app/frontend/dist"
+  },
+  "app": {
+    "windows": [
+      {
+        "title": "Frog",
+        "width": 1200,
+        "height": 820
+      }
+    ]
+  }
+}
