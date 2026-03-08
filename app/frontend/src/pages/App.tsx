@@ -106,6 +106,8 @@ export function App() {
     setMessages((m) => [...m, { role: 'assistant', content: '' }]);
     setStatus('Responding');
 
+    // Stream SSE events as JSON payloads so we preserve whitespace/newlines exactly
+    // as the model generated them. Splitting raw `data:` strings can drop formatting.
     while (true) {
       const { done, value } = await reader.read();
       if (done) break;
@@ -116,7 +118,11 @@ export function App() {
         if (!line.startsWith('data: ')) continue;
         const payload = line.slice(6);
         if (payload === '[DONE]') continue;
-        assistant += payload;
+        // Support the new JSON SSE token format while tolerating older raw text payloads.
+        const tokenPayload = payload.startsWith('{')
+          ? (JSON.parse(payload) as { token: string }).token
+          : payload;
+        assistant += tokenPayload;
         setMessages((m) => {
           const updated = [...m];
           updated[updated.length - 1] = { role: 'assistant', content: assistant };
@@ -138,18 +144,21 @@ export function App() {
     <main className="layout">
       <header>
         <h1>Frog</h1>
-        <div className="controls">
-          <select value={persona} onChange={(e) => void onPersonaChange(e.target.value as PersonaId)}>
-            {personas.map((p) => <option key={p.id} value={p.id}>{p.name}</option>)}
-          </select>
-          <select value={model} onChange={(e) => setModel(e.target.value)}>
-            {models.length === 0 ? <option value="">No models available</option> : models.map((m) => <option key={m} value={m}>{m}</option>)}
-          </select>
-          <button onClick={() => void onNewConversation()}>New Conversation</button>
+        <div className="header-row">
+          <div className="controls" aria-label="conversation controls">
+            <select value={persona} onChange={(e) => void onPersonaChange(e.target.value as PersonaId)}>
+              {personas.map((p) => <option key={p.id} value={p.id}>{p.name}</option>)}
+            </select>
+            <select value={model} onChange={(e) => setModel(e.target.value)}>
+              {models.length === 0 ? <option value="">No models available</option> : models.map((m) => <option key={m} value={m}>{m}</option>)}
+            </select>
+            <button onClick={() => void onNewConversation()}>New Conversation</button>
+          </div>
+          {/* Face sits to the right of controls on larger screens, then wraps below on narrow widths. */}
+          <AnimatedFace state={faceState} />
         </div>
         <StatusDisplay status={status} />
       </header>
-      <AnimatedFace state={faceState} />
       <section className="main-content">
         <ChatWindow messages={messages} />
         <FilePanel files={files} />
