@@ -65,7 +65,8 @@ api.post('/chat/stream', async (req, res) => {
         if (!line.trim()) continue;
         const json = JSON.parse(line) as { message?: { content?: string }; done?: boolean };
         const token = json.message?.content ?? '';
-        if (token) res.write(`data: ${token}\n\n`);
+        // Wrap token in JSON so newline/space characters survive SSE framing.
+        if (token) res.write(`data: ${JSON.stringify({ token })}\n\n`);
         if (json.done) res.write('data: [DONE]\n\n');
       }
     }
